@@ -2,7 +2,7 @@
 
 import { useModal } from "@/hooks/useModalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import {
@@ -37,6 +37,10 @@ import { cn } from "@/lib/utils";
 
 const formSchema = z.object({
   customer: z.string().min(1, "Customer is required"),
+  productCode: z.string().min(1, "Product code is required"),
+  productName: z.string().min(1, "Product name is required"),
+  category: z.string().min(1, "Category is required"),
+  description: z.string(),
   defectiveItem: z.string().min(1, "Defective item is required"),
   charges: z.number().min(0, "Charges cannot be less than zero"),
   repairPerson: z
@@ -60,6 +64,8 @@ const customers = [
 
 const AddServiceModal = () => {
   const { isOpen, type, onClose, data } = useModal();
+  const [showDefectiveItemModal, setShowDefectiveItemModal] = useState(false);
+  const [defectiveItemId, setDefectiveItemId] = useState("");
 
   const isModalOpen = isOpen && type === "addService";
 
@@ -70,6 +76,10 @@ const AddServiceModal = () => {
       defectiveItem: "",
       charges: 0,
       repairPerson: "",
+      productCode: "",
+      productName: "",
+      category: "",
+      description: "",
     },
   });
 
@@ -87,8 +97,8 @@ const AddServiceModal = () => {
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={handleClose}>
-      <DialogContent className="bg-white p-0 overflow-hidden">
+    <Dialog open={isModalOpen} onOpenChange={handleClose} >
+      <DialogContent className="bg-white p-0 max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-blue-600">
             Add Service
@@ -96,10 +106,10 @@ const AddServiceModal = () => {
         </DialogHeader>
         <Form {...form}>
           <form
-            className="space-y-4"
+            className="space-y-4 overflow-hidden flex flex-col"
             onSubmit={form.handleSubmit(handleSubmit)}
           >
-            <div className="space-y-4 px-6">
+            <div className="space-y-4 px-6 h-full overflow-auto">
               <FormField
                 control={form.control}
                 name="customer"
@@ -115,7 +125,7 @@ const AddServiceModal = () => {
                             variant="outline"
                             role="combobox"
                             className={cn(
-                              "w-[400px] justify-between",
+                              "w-full justify-between",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -167,20 +177,79 @@ const AddServiceModal = () => {
               />
               <FormField
                 control={form.control}
-                name="defectiveItem"
+                name="productCode"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Defective Item
+                      Product Code
                     </FormLabel>
                     <FormControl>
-                      <Button variant={'outline'}>Add defective item</Button>
-                      {/* <Input
+                      <Input
                         disabled={isLoading}
                         className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Enter customer email address"
+                        placeholder="Enter product code"
                         {...field}
-                      /> */}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="productName"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      Product Name
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isLoading}
+                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        placeholder="Enter name"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      Product Category
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        disabled={isLoading}
+                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        placeholder="Enter category"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
+                      Product Description
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        disabled={isLoading}
+                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                        placeholder="Enter description"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -195,12 +264,17 @@ const AddServiceModal = () => {
                       Base Charges
                     </FormLabel>
                     <FormControl>
+                      <div className="flex items-center gap-2 ">
+                        <div className="text-xl opacity-50">Rs.</div>
+
                       <Input
+                        type="number"
                         disabled={isLoading}
                         className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="Enter customer phone number"
+                        placeholder="1000"
                         {...field}
                       />
+                      </div>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -221,7 +295,7 @@ const AddServiceModal = () => {
                             variant="outline"
                             role="combobox"
                             className={cn(
-                              "w-[400px] justify-between",
+                              "w-full justify-between",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -229,23 +303,26 @@ const AddServiceModal = () => {
                               ? customers.find(
                                   (customer) => customer.value === field.value
                                 )?.label
-                              : "Select customer"}
+                              : "Select repair person"}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-[400px] p-0">
                         <Command>
-                          <CommandInput placeholder="Search customer..." />
+                          <CommandInput placeholder="Search repair person..." />
                           <CommandList>
-                            <CommandEmpty>No customer found.</CommandEmpty>
+                            <CommandEmpty>No repair person found.</CommandEmpty>
                             <CommandGroup>
                               {customers.map((customer) => (
                                 <CommandItem
                                   value={customer.label}
                                   key={customer.value}
                                   onSelect={() => {
-                                    form.setValue("repairPerson", customer.value);
+                                    form.setValue(
+                                      "repairPerson",
+                                      customer.value
+                                    );
                                   }}
                                 >
                                   <Check

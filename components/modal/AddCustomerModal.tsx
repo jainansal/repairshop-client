@@ -56,17 +56,9 @@ const AddCustomerModal = () => {
 
   const isLoading = form.formState.isSubmitting;
 
-  // const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-  //   try {
-  //     await createChannel(params?.serverId, values);
-
-  //     form.reset();
-  //     router.refresh();
-  //     onClose();
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const handleSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log(values);
+  };
 
   const handleClose = () => {
     form.reset();
@@ -77,10 +69,15 @@ const AddCustomerModal = () => {
     <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white text-blue-600 p-0 overflow-hidden">
         <DialogHeader className="pt-8 px-6">
-          <DialogTitle className="text-2xl font-bold ">Add Customer</DialogTitle>
+          <DialogTitle className="text-2xl font-bold ">
+            Add Customer
+          </DialogTitle>
         </DialogHeader>
         <Form {...form}>
-          <form className="space-y-4">
+          <form
+            className="space-y-4"
+            onSubmit={form.handleSubmit(handleSubmit)}
+          >
             <div className="space-y-4 px-6">
               <FormField
                 control={form.control}
@@ -164,7 +161,9 @@ const AddCustomerModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading} variant={'primary'}>Add</Button>
+              <Button disabled={isLoading} variant={"primary"}>
+                Add
+              </Button>
             </DialogFooter>
           </form>
         </Form>
