@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import AddCustomerModal from "../modal/AddCustomerModal";
 import AddServiceModal from "../modal/AddServiceModal";
+import UpdateProfileModal from "../modal/UpdateProfileModal";
+import ChangePasswordModal from "../modal/ChangePasswordModal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -17,6 +19,8 @@ const ModalProvider = () => {
     <>
       <AddCustomerModal />
       <AddServiceModal />
+      <UpdateProfileModal />
+      <ChangePasswordModal />
     </>
   );
 };

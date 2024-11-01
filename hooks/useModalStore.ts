@@ -1,8 +1,21 @@
 import { create } from "zustand";
 
-export type ModalType = "addCustomer" | "addService";
+export type ModalType =
+  | "addCustomer"
+  | "addService"
+  | "updateProfile"
+  | "changePassword";
 
-interface ModalData {}
+interface User {
+  name: string;
+  email: string;
+  phone: string;
+  address?: string;
+}
+
+interface ModalData {
+  user?: User;
+}
 
 interface ModalStore {
   type: ModalType | null;
