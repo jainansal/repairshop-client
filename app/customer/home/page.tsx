@@ -6,15 +6,13 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/useModalStore";
 import { useEffect, useRef } from "react";
 
-const HomePage = () => {
+const CustomerHomePage = () => {
   const { onOpen } = useModal();
   const searchInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -31,26 +29,10 @@ const HomePage = () => {
     <div className="h-full w-full p-4 gap-4 flex flex-col overflow-hidden">
       <div className="flex gap-4">
         <Input placeholder="Search..." ref={searchInputRef} />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant={"primary"}>Add</Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem onClick={() => onOpen("addCustomer")}>
-              Customer
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onOpen("addService")}>
-              Service
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
-      <TableSection
-        tabs={["Customers", "Services", "Repair Persons"]}
-        showMineToggle={true}
-      />
+      <TableSection tabs={["Services", "Requests"]} showMineToggle={false} />
     </div>
   );
 };
 
-export default HomePage;
+export default CustomerHomePage;

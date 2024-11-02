@@ -5,6 +5,8 @@ import AddCustomerModal from "../modal/AddCustomerModal";
 import AddServiceModal from "../modal/AddServiceModal";
 import UpdateProfileModal from "../modal/UpdateProfileModal";
 import ChangePasswordModal from "../modal/ChangePasswordModal";
+import DefectiveItemDetailsModal from "../modal/DefectiveItemDetailsModal";
+import RequestApprovalDetailsModal from "../modal/RequestApprovalDetailsModal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -21,6 +23,8 @@ const ModalProvider = () => {
       <AddServiceModal />
       <UpdateProfileModal />
       <ChangePasswordModal />
+      <DefectiveItemDetailsModal />
+      <RequestApprovalDetailsModal />
     </>
   );
 };

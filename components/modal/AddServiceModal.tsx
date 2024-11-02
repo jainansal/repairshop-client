@@ -97,7 +97,7 @@ const AddServiceModal = () => {
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={handleClose} >
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent className="bg-white p-0 max-h-[90vh] overflow-hidden flex flex-col">
         <DialogHeader className="pt-8 px-6">
           <DialogTitle className="text-2xl font-bold text-blue-600">
@@ -241,7 +241,7 @@ const AddServiceModal = () => {
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className="uppercase text-xs font-bold text-zinc-500 dark:text-secondary/70">
-                      Product Description
+                      Description
                     </FormLabel>
                     <FormControl>
                       <Textarea
@@ -267,13 +267,13 @@ const AddServiceModal = () => {
                       <div className="flex items-center gap-2 ">
                         <div className="text-xl opacity-50">Rs.</div>
 
-                      <Input
-                        type="number"
-                        disabled={isLoading}
-                        className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
-                        placeholder="1000"
-                        {...field}
-                      />
+                        <Input
+                          type="number"
+                          disabled={isLoading}
+                          className="bg-zinc-300/50 border-0 focus-visible:ring-0 text-black focus-visible:ring-offset-0"
+                          placeholder="1000"
+                          {...field}
+                        />
                       </div>
                     </FormControl>
                     <FormMessage />

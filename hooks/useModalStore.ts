@@ -4,7 +4,9 @@ export type ModalType =
   | "addCustomer"
   | "addService"
   | "updateProfile"
-  | "changePassword";
+  | "changePassword"
+  | "defectiveItemDetails"
+  | "requestApprovalDetails";
 
 interface User {
   name: string;

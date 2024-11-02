@@ -15,7 +15,7 @@ const TableHeading = ({ text, activeTab, setActiveTab }: TableHeadingProps) => {
         ${
           activeTab == text
             ? "text-blue-700 text-xl font-bold underline underline-offset-4"
-            : "text-gray-400"
+            : "text-gray-600"
         }`}
       onClick={() => setActiveTab(text)}
     >

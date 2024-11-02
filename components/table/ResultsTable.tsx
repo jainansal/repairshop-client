@@ -13,30 +13,26 @@ interface ResultsTableProps {
   activeTab: string;
 }
 
+type TABLE_OPTIONS = "Customers" | "Services" | "Requests" | "Repair Persons";
+
+const TABLE_HEADERS: Record<TABLE_OPTIONS, string[]> = {
+  Customers: ["ID", "Name", "Email", "Phone", "Created by"],
+  Services: ["ID", "Service Code", "Defective Item", "Status", "Customer"],
+  Requests: ["ID", "Service Code", "Defective Item", "New Item", "Price"],
+  "Repair Persons": ["ID", "Name", "Email", "Phone", "Created by"],
+};
+
 const ResultsTable = ({ activeTab }: ResultsTableProps) => {
   return (
     <Table className="bg-blue-50">
       <TableCaption>A list of your recent {activeTab}.</TableCaption>
       <TableHeader>
-        {activeTab == "Customers" ? (
-          <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead>Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Phone</TableHead>
-            <TableHead>Created by</TableHead>
-            <TableHead className="text-right">Action</TableHead>
-          </TableRow>
-        ) : (
-          <TableRow>
-            <TableHead className="w-[100px]">ID</TableHead>
-            <TableHead>Service Code</TableHead>
-            <TableHead>Defective Item</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Customer</TableHead>
-            <TableHead className="text-right">Action</TableHead>
-          </TableRow>
-        )}
+        <TableRow>
+          {TABLE_HEADERS[activeTab as TABLE_OPTIONS].map((header) => (
+            <TableHead>{header}</TableHead>
+          ))}
+          <TableHead className="text-right">Action</TableHead>
+        </TableRow>
       </TableHeader>
       <TableBody>
         <TableRow>
