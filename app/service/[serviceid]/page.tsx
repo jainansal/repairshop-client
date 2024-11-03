@@ -1,7 +1,10 @@
 "use client";
 
 import { useModal } from "@/hooks/useModalStore";
-import React from "react";
+import { USER_TYPE } from "@/lib/data/userType";
+import { UserType } from "@/lib/enums";
+import { CirclePlus, Plus, PlusSquare } from "lucide-react";
+import React, { useState } from "react";
 
 function ServiceDetails() {
   const { onOpen } = useModal();
@@ -71,7 +74,21 @@ function ServiceDetails() {
 
           {/* Requests for Approval Section */}
           <div className="border rounded-lg p-4 bg-neutral-200">
-            <h3 className="text-lg font-bold mb-2">Requests For Approval</h3>
+            <div className="flex justify-between mb-2 items-center">
+              <h3 className="text-lg font-bold">Requests For Approval</h3>
+              {USER_TYPE == UserType.REPAIR ? (
+                <div
+                  className="flex px-2 py-1 gap-1 rounded bg-blue-600 text-sm items-center text-neutral-100 hover:bg-blue-700 cursor-pointer"
+                  onClick={() => onOpen("newItemRequest")}
+                >
+                  <Plus size={16} />
+                  New
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+
             <ul className="list-disc list-inside">
               <li
                 onClick={() => onOpen("requestApprovalDetails")}
@@ -83,6 +100,26 @@ function ServiceDetails() {
               <li>Main Battery - rejected</li>
             </ul>
           </div>
+          {USER_TYPE == UserType.CLERK ? (
+            <button
+              className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full disabled:bg-purple-400 disabled:hover:bg-purple-400 disabled:cursor-not-allowed"
+              onClick={() => onOpen("addService")}
+            >
+              Generate Invoice
+            </button>
+          ) : (
+            ""
+          )}
+          {USER_TYPE == UserType.REPAIR ? (
+            <button
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full disabled:bg-green-400 disabled:hover:bg-green-400 disabled:cursor-not-allowed"
+              onClick={() => onOpen("addService")}
+            >
+              Mark as completed
+            </button>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </div>

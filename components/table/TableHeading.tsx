@@ -1,25 +1,26 @@
 import React from "react";
 import { Button } from "../ui/button";
+import { TABLE_OPTIONS } from "@/lib/enums";
 
 interface TableHeadingProps {
-  text: string;
-  activeTab: string;
-  setActiveTab: React.Dispatch<React.SetStateAction<string>>;
+  tab: TABLE_OPTIONS;
+  activeTab: TABLE_OPTIONS;
+  setActiveTab: React.Dispatch<React.SetStateAction<TABLE_OPTIONS>>;
 }
 
-const TableHeading = ({ text, activeTab, setActiveTab }: TableHeadingProps) => {
+const TableHeading = ({ tab, activeTab, setActiveTab }: TableHeadingProps) => {
   return (
     <div
       className={`
         cursor-pointer duration-150 h-7 flex items-end
         ${
-          activeTab == text
+          activeTab == tab
             ? "text-blue-700 text-xl font-bold underline underline-offset-4"
             : "text-gray-600"
         }`}
-      onClick={() => setActiveTab(text)}
+      onClick={() => setActiveTab(tab)}
     >
-      {text}
+      {tab}
     </div>
   );
 };

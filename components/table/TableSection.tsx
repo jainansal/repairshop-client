@@ -5,9 +5,10 @@ import TableHeading from "./TableHeading";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import ResultsTable from "./ResultsTable";
+import { TABLE_OPTIONS } from "@/lib/enums";
 
 interface TableSectionProps {
-  tabs: string[];
+  tabs: TABLE_OPTIONS[];
   showMineToggle: boolean;
 }
 
@@ -20,7 +21,7 @@ const TableSection = ({ tabs, showMineToggle }: TableSectionProps) => {
           {tabs.map((tab) => (
             <TableHeading
               key={tab}
-              text={tab}
+              tab={tab}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />

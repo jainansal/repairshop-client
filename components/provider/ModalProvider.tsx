@@ -7,6 +7,7 @@ import UpdateProfileModal from "../modal/UpdateProfileModal";
 import ChangePasswordModal from "../modal/ChangePasswordModal";
 import DefectiveItemDetailsModal from "../modal/DefectiveItemDetailsModal";
 import RequestApprovalDetailsModal from "../modal/RequestApprovalDetailsModal";
+import NewItemRequestModal from "../modal/NewItemRequestModal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -25,6 +26,7 @@ const ModalProvider = () => {
       <ChangePasswordModal />
       <DefectiveItemDetailsModal />
       <RequestApprovalDetailsModal />
+      <NewItemRequestModal />
     </>
   );
 };

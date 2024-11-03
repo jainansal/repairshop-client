@@ -3,7 +3,7 @@
 import { useModal } from "@/hooks/useModalStore";
 import React, { useState } from "react";
 
-const ClerkProfile = () => {
+const UserProfile = () => {
   const { onOpen } = useModal();
   const [profileData] = useState({
     name: "Ansal Jain",
@@ -65,4 +65,4 @@ const ClerkProfile = () => {
   );
 };
 
-export default ClerkProfile;
+export default UserProfile;

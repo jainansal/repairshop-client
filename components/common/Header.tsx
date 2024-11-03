@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   DropdownMenu,
@@ -13,13 +13,18 @@ const Header = () => {
 
   return (
     <div className=" text-white flex items-center justify-between p-4 bg-blue-500">
-      <h1 className="text-4xl cursor-pointer" onClick={() => router.push("/clerk/home")}>Repair Shop</h1>
+      <h1
+        className="text-4xl cursor-pointer"
+        onClick={() => router.push("/home")}
+      >
+        Repair Shop
+      </h1>
       <DropdownMenu>
         <DropdownMenuTrigger>
           <div className="h-8 w-8 rounded-full bg-white cursor-pointer"></div>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
-          <DropdownMenuItem onClick={() => router.push("/clerk/profile")}>
+          <DropdownMenuItem onClick={() => router.push("/profile")}>
             Profile
           </DropdownMenuItem>
           <DropdownMenuItem>Logout</DropdownMenuItem>

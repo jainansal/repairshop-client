@@ -8,12 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from "../ui/table";
+import { Button } from "../ui/button";
+import { Check, X } from "lucide-react";
+import { TABLE_OPTIONS } from "@/lib/enums";
+import { useModal } from "@/hooks/useModalStore";
+import { useRouter } from "next/navigation";
 
 interface ResultsTableProps {
-  activeTab: string;
+  activeTab: TABLE_OPTIONS;
 }
-
-type TABLE_OPTIONS = "Customers" | "Services" | "Requests" | "Repair Persons";
 
 const TABLE_HEADERS: Record<TABLE_OPTIONS, string[]> = {
   Customers: ["ID", "Name", "Email", "Phone", "Created by"],
@@ -23,6 +26,8 @@ const TABLE_HEADERS: Record<TABLE_OPTIONS, string[]> = {
 };
 
 const ResultsTable = ({ activeTab }: ResultsTableProps) => {
+  const { onOpen } = useModal();
+  const router = useRouter();
   return (
     <Table className="bg-blue-50">
       <TableCaption>A list of your recent {activeTab}.</TableCaption>
@@ -35,101 +40,34 @@ const ResultsTable = ({ activeTab }: ResultsTableProps) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        <TableRow>
+        <TableRow
+          onClick={() => {
+            if (activeTab == "Customers") router.push("/customer/1");
+            if (activeTab == "Services") router.push("/service/1");
+            if (activeTab == "Repair Persons") router.push("/repair/1");
+            if (activeTab == "Requests") onOpen("requestApprovalDetails");
+          }}
+        >
           <TableCell className="font-medium">101</TableCell>
           <TableCell>Ansal Jain</TableCell>
           <TableCell>jainansal@gmail.com</TableCell>
           <TableCell>+91-8267182678</TableCell>
           <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
-        </TableRow>
-        <TableRow>
-          <TableCell className="font-medium">101</TableCell>
-          <TableCell>Ansal Jain</TableCell>
-          <TableCell>jainansal@gmail.com</TableCell>
-          <TableCell>+91-8267182678</TableCell>
-          <TableCell>Harshit</TableCell>
-          <TableCell className="text-right">Generate Invoice</TableCell>
+          {activeTab == "Requests" ? (
+            <TableCell className="text-right">
+              <Button
+                className="mr-2 bg-green-600 hover:bg-green-700 p-2 h-fit"
+                title="Approve"
+              >
+                <Check />
+              </Button>
+              <Button className="bg-red-600 hover:bg-red-700 p-2 h-fit" title="Reject">
+                <X />
+              </Button>
+            </TableCell>
+          ) : (
+            <TableCell className="text-right">Generate Invoice</TableCell>
+          )}
         </TableRow>
       </TableBody>
     </Table>

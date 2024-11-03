@@ -6,7 +6,8 @@ export type ModalType =
   | "updateProfile"
   | "changePassword"
   | "defectiveItemDetails"
-  | "requestApprovalDetails";
+  | "requestApprovalDetails"
+  | "newItemRequest";
 
 interface User {
   name: string;
