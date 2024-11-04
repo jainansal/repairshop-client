@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/useModalStore";
+import { useUser } from "@/hooks/useUser";
 import { USER_TYPE } from "@/lib/data/userType";
 import { TABLE_OPTIONS, UserType } from "@/lib/enums";
 import { useEffect, useRef, useState } from "react";
@@ -35,6 +36,7 @@ const USER_TABLE_CONFIG: Record<
 };
 
 const HomePage = () => {
+  const { user } = useUser();
   const { onOpen } = useModal();
   const searchInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
@@ -51,7 +53,7 @@ const HomePage = () => {
     <div className="h-full w-full p-4 gap-4 flex flex-col overflow-hidden">
       <div className="flex gap-4">
         <Input placeholder="Search..." ref={searchInputRef} />
-        {USER_TYPE == UserType.CLERK ? (
+        {user?.type == UserType.CLERK ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant={"primary"}>Add</Button>
@@ -70,8 +72,10 @@ const HomePage = () => {
         )}
       </div>
       <TableSection
-        tabs={USER_TABLE_CONFIG[USER_TYPE as UserType].tabs}
-        showMineToggle={USER_TABLE_CONFIG[USER_TYPE as UserType].showMineToggle}
+        tabs={USER_TABLE_CONFIG[user?.type || UserType.CUSTOMER].tabs}
+        showMineToggle={
+          USER_TABLE_CONFIG[user?.type || UserType.CUSTOMER].showMineToggle
+        }
       />
     </div>
   );

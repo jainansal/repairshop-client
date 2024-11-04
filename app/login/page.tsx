@@ -18,9 +18,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import { useUser } from "@/hooks/useUser";
 import axiosInstance from "@/lib/axios";
 import { UserType } from "@/lib/enums";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
@@ -31,6 +33,8 @@ const formSchema = z.object({
 });
 
 const LoginPage = () => {
+  const { login } = useUser();
+  const router = useRouter();
   const { toast } = useToast();
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -46,13 +50,16 @@ const LoginPage = () => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axiosInstance.post("/login", values);
-      console.log(response.data);
+      login({
+        type: form.getValues("type"),
+        id: "",
+      });
+      router.push("/home");
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Some error occured",
       });
-      console.log(error);
     }
   };
 
