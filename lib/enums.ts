@@ -1,7 +1,8 @@
 export enum UserType {
-  REPAIR = "RepairPerson",
-  CLERK = "Clerk",
-  CUSTOMER = "Customer",
+  REPAIR = "repair",
+  CLERK = "clerk",
+  CUSTOMER = "customer",
 }
 
-export type TABLE_OPTIONS = "Customers" | "Services" | "Requests" | "Repair Persons";
+export type TABLE_TYPE = "customer" | "repairperson" | "service" | "request";
+

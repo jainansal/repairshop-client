@@ -1,19 +1,41 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TableHeading from "./TableHeading";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import ResultsTable from "./ResultsTable";
-import { TABLE_OPTIONS } from "@/lib/enums";
+import { TABLE_TYPE, UserType } from "@/lib/enums";
+import { toast } from "@/hooks/use-toast";
+import { useUser } from "@/hooks/useUser";
+import axiosInstance from "@/lib/axios";
+import { TABLE_INFO, USER_TABLE_CONFIG } from "@/lib/constants";
 
 interface TableSectionProps {
-  tabs: TABLE_OPTIONS[];
-  showMineToggle: boolean;
+  search: string;
 }
 
-const TableSection = ({ tabs, showMineToggle }: TableSectionProps) => {
+const TableSection = ({ search }: TableSectionProps) => {
+  const { user } = useUser();
+  const { tabs, showMineToggle } =
+    USER_TABLE_CONFIG[user?.type || UserType.CLERK];
   const [activeTab, setActiveTab] = useState(tabs[0]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await axiosInstance.get(
+          `/${user?.type}/${TABLE_INFO[activeTab].key}?search=${search}`
+        );
+        console.log(response);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: "Some error occured",
+        });
+      }
+    }
+    fetchData();
+  }, [search, activeTab]);
   return (
     <div className="h-full flex flex-col overflow-hidden rounded">
       <div className="flex p-4 justify-between items-center bg-blue-200">
