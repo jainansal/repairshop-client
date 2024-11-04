@@ -3,6 +3,7 @@
 import { useModal } from "@/hooks/useModalStore";
 import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Button } from "../ui/button";
 
 const RequestApprovalDetailsModal = () => {
   const { isOpen, type, onClose } = useModal();
@@ -36,6 +37,14 @@ const RequestApprovalDetailsModal = () => {
           <div>
             <p className="font-semibold">Status:</p>
             <p>Pending for approval</p>
+          </div>
+          <div className="flex gap-4">
+            <Button variant={"approve"} className="w-full">
+              Approve
+            </Button>
+            <Button variant={"reject"} className="w-full">
+              Reject
+            </Button>
           </div>
         </div>
       </DialogContent>

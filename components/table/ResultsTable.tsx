@@ -56,12 +56,13 @@ const ResultsTable = ({ activeTab }: ResultsTableProps) => {
           {activeTab == "Requests" ? (
             <TableCell className="text-right">
               <Button
-                className="mr-2 bg-green-600 hover:bg-green-700 p-2 h-fit"
+                variant={"approve"}
                 title="Approve"
+                className="p-2 mr-2 h-fit"
               >
                 <Check />
               </Button>
-              <Button className="bg-red-600 hover:bg-red-700 p-2 h-fit" title="Reject">
+              <Button variant={"reject"} title="Reject" className="p-2 h-fit">
                 <X />
               </Button>
             </TableCell>
