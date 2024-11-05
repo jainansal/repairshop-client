@@ -30,6 +30,33 @@ const ServiceDetails = () => {
       price: "₹3500",
       status: "Approved",
     },
+    {
+      id: 3,
+      title: "Buttons change request",
+      newItemDetails: "Button Model XYZ",
+      productCode: "BTn456",
+      description: "Power button issue requires buttons replacement",
+      price: "₹1500",
+      status: "Approved",
+    },
+    {
+      id: 4,
+      title: "Motherboard change request",
+      newItemDetails: "MotherBoard Model XYZ",
+      productCode: "MTB456",
+      description: "Sound and call compatibility problem requires replacement",
+      price: "₹6500",
+      status: "Approved",
+    },
+    {
+      id: 5,
+      title: "Camera change request",
+      newItemDetails: "Camera Model XYZ",
+      productCode: "CAm456",
+      description: "Camera flickering issue requires replacement",
+      price: "₹5500",
+      status: "Approved",
+    },
     // Add more requests as needed
   ];
 
@@ -185,15 +212,17 @@ const ServiceDetails = () => {
             >
               Request for Approval
             </h3>
-            {approvalRequests.map((request) => (
+            {approvalRequests.map((request, index) => (
               <h4
                 key={request.id}
                 style={{
-                  color: "#555",
+                  color: "#554",
                   cursor: "pointer",
-                  borderRadius: "2px",
+                  borderRadius: "8px",
+                  border: "2px gray solid",
                   padding: "4px",
                   margin: "2px",
+                  fontWeight: "bold",
                   transition: "transform 0.2s ease, box-shadow 0.2s ease",
                 }}
                 onClick={() => openModal(request)}
@@ -209,7 +238,7 @@ const ServiceDetails = () => {
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
-                {request.title}
+                {`${index + 1}. ${request.title}`}
               </h4>
             ))}
           </div>
