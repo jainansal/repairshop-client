@@ -16,7 +16,7 @@ interface TableSectionProps {
 }
 
 const TableSection = ({ search }: TableSectionProps) => {
-  const { user } = useUser();
+  const { user, isAuthenticated } = useUser();
   const { tabs, showMineToggle } =
     USER_TABLE_CONFIG[user?.type || UserType.CLERK];
   const [activeTab, setActiveTab] = useState(tabs[0]);
@@ -26,7 +26,6 @@ const TableSection = ({ search }: TableSectionProps) => {
         const response = await axiosInstance.get(
           `/${user?.type}/${TABLE_INFO[activeTab].key}?search=${search}`
         );
-        console.log(response);
       } catch (error) {
         toast({
           variant: "destructive",
@@ -34,8 +33,10 @@ const TableSection = ({ search }: TableSectionProps) => {
         });
       }
     }
-    fetchData();
-  }, [search, activeTab]);
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [search, activeTab, user]);
   return (
     <div className="h-full flex flex-col overflow-hidden rounded">
       <div className="flex p-4 justify-between items-center bg-blue-200">
@@ -59,7 +60,7 @@ const TableSection = ({ search }: TableSectionProps) => {
           </div>
         )}
       </div>
-      <ResultsTable activeTab={activeTab} />
+      <ResultsTable activeTab={activeTab} content="" />
     </div>
   );
 };

@@ -23,6 +23,8 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import { toast } from "@/hooks/use-toast";
+import axiosInstance from "@/lib/axios";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -57,7 +59,18 @@ const AddCustomerModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      const response = await axiosInstance.post("/clerk/customer", values);
+      toast({
+        description: "Customer created successfully",
+      });
+      onClose();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Some error occured",
+      });
+    }
   };
 
   const handleClose = () => {

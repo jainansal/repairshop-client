@@ -1,11 +1,13 @@
-import { AUTH_COOKIE_KEYWORD } from "@/lib/constants";
 import { UserType } from "@/lib/enums";
-import { cookies } from "next/headers";
 import { create } from "zustand";
 
 interface UserData {
-  type: UserType;
   id: string;
+  type: UserType;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
 }
 
 interface UserContext {

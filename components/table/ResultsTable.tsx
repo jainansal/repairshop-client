@@ -18,9 +18,10 @@ import { TABLE_INFO } from "@/lib/constants";
 
 interface ResultsTableProps {
   activeTab: TABLE_TYPE;
+  content: any;
 }
 
-const ResultsTable = ({ activeTab }: ResultsTableProps) => {
+const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
   const { onOpen } = useModal();
   const router = useRouter();
   return (
