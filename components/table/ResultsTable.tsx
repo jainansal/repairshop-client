@@ -9,6 +9,7 @@ import {
 } from "../ui/table";
 import { TABLE_INFO } from "@/lib/constants";
 import { TableTab } from "@/lib/enums";
+import { useRouter } from "next/navigation";
 
 interface ResultsTableProps {
   activeTab: TableTab;
@@ -16,6 +17,10 @@ interface ResultsTableProps {
 }
 
 const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
+  const router = useRouter();
+  const goToResource = (id: number) => {
+    router.push(`/${activeTab.value}/${id}`);
+  };
   return (
     <Table className="bg-blue-50">
       <TableCaption>A list of your recent {activeTab.label}.</TableCaption>
@@ -24,7 +29,9 @@ const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
           {TABLE_INFO[activeTab.value].headers
             .map((header) => header.label)
             .map((header) => (
-              <TableHead key={`${activeTab.value}-${header}`}>{header}</TableHead>
+              <TableHead key={`${activeTab.value}-${header}`}>
+                {header}
+              </TableHead>
             ))}
           <TableHead className="text-right">Action</TableHead>
         </TableRow>
@@ -32,7 +39,10 @@ const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
       <TableBody>
         {content.map((item: any) => {
           return (
-            <TableRow key={`${item["id"]}`}>
+            <TableRow
+              key={`${item["id"]}`}
+              onClick={() => goToResource(item.id)}
+            >
               {TABLE_INFO[activeTab.value].headers
                 .map((header) => header.key)
                 .map((key) => (

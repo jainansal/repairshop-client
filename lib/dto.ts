@@ -17,6 +17,7 @@ export interface GetServiceDto {
   description: string;
   custName: string;
   repairName: string;
+  clerkName: string;
 }
 
 export interface GetDefectiveItemDto {
@@ -24,4 +25,27 @@ export interface GetDefectiveItemDto {
   productCode: string;
   title: string;
   category: string;
+}
+
+export interface GetRepairPersonDto {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  specialty: string;
+}
+
+export interface GetCustomerDto {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+}
+
+export interface GetServiceHistoryDto {
+  id: number;
+  description: string;
+  createdAt: string;
 }

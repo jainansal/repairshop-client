@@ -71,6 +71,7 @@ export const TABLE_INFO: Record<
       { label: "Status", key: "status" },
       { label: "Customer", key: "custName" },
       { label: "Assigned to", key: "repairName" },
+      { label: "Created by", key: "clerkName" },
     ] as {
       label: string;
       key: keyof GetServiceDto;

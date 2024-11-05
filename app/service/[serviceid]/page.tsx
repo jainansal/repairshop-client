@@ -1,13 +1,75 @@
 "use client";
 
+import { toast } from "@/hooks/use-toast";
 import { useModal } from "@/hooks/useModalStore";
 import { useUser } from "@/hooks/useUser";
+import axiosInstance from "@/lib/axios";
+import { GetServiceDto, GetServiceHistoryDto } from "@/lib/dto";
 import { UserType } from "@/lib/enums";
 import { CirclePlus, Plus, PlusSquare } from "lucide-react";
-import React, { useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
 
 function ServiceDetails() {
-  const { user } = useUser();
+  const { user, isAuthenticated } = useUser();
+  const [loading, setLoading] = useState(true);
+  const [service, setService] = useState<GetServiceDto>();
+  const [serviceHistory, setServiceHistory] =
+    useState<GetServiceHistoryDto[]>();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated && user?.type !== UserType.CLERK) {
+      router.push("/home");
+    }
+  }, [isAuthenticated, user, router]);
+
+  if (isAuthenticated && user?.type !== UserType.CLERK) {
+    return null;
+  }
+
+  const params = useParams();
+  const id = params?.serviceid;
+
+  if (!id) {
+    router.push("/home");
+  }
+
+  useEffect(() => {
+    async function fetchService() {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get(`/clerk/service/${id}`);
+        setService(response.data);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: "Some error occured",
+        });
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    async function fetchStatusHistory() {
+      try {
+        setLoading(true);
+        const response = await axiosInstance.get(
+          `/clerk/service/${id}/history`
+        );
+        setServiceHistory(response.data);
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: "Some error occured",
+        });
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    Promise.all([fetchService(), fetchStatusHistory()]);
+  }, [id]);
   const { onOpen } = useModal();
 
   return (
@@ -19,19 +81,22 @@ function ServiceDetails() {
           <div className="pb-4 mb-4">
             <h2 className="text-xl font-bold mb-2">Service</h2>
             <p>
-              <strong>Service Code:</strong> S998011
+              <strong>Service Code:</strong> {service?.code}
             </p>
             <p>
-              <strong>Status:</strong> In Progress
+              <strong>Status:</strong> {service?.status}
             </p>
             <p>
-              <strong>Base Charge:</strong> Rs. 7700
+              <strong>Base Charge:</strong> Rs. {service?.baseCharge}
             </p>
             <p>
-              <strong>Customer:</strong> Rajan Singh
+              <strong>Customer:</strong> {service?.custName}
             </p>
             <p>
-              <strong>Assigned to:</strong> Ankit Kumar
+              <strong>Assigned to:</strong> {service?.repairName}
+            </p>
+            <p>
+              <strong>Created by:</strong> {service?.clerkName}
             </p>
           </div>
 
@@ -39,14 +104,14 @@ function ServiceDetails() {
           <div className="mt-6 pt-4">
             <h2 className="text-xl font-bold mb-2">Status History</h2>
             <div className="space-y-2">
-              <div>
-                <p>Service created</p>
-                <p className="text-sm text-gray-500">19th Jan 2024</p>
-              </div>
-              <div className="bg-blue-200 p-2 rounded">
-                <p className="font-semibold">In Progress</p>
-                <p className="text-sm text-gray-500">19th Jan 2024</p>
-              </div>
+              {serviceHistory?.map((status) => (
+                <div key={status.id}>
+                  <p>{status.description}</p>
+                  <p className="text-sm text-gray-500">
+                    {`${new Date(status.createdAt)}`}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -54,22 +119,16 @@ function ServiceDetails() {
         {/* Right Section */}
         <div className="col-span-1 space-y-4">
           {/* Defective Item Section */}
-          <div
-            className="border rounded-lg p-4 bg-neutral-200 cursor-pointer"
-            onClick={() => onOpen("defectiveItemDetails")}
-          >
+          <div className="border rounded-lg p-4 bg-neutral-200">
             <h3 className="text-lg font-bold mb-2">Defective Item</h3>
             <p>
-              <strong>Item Code:</strong> P22891
+              <strong>Item Code:</strong> {service?.defItem.productCode}
             </p>
             <p>
-              <strong>Item Name:</strong> JBL PartyBox
-            </p>
-            <p>
-              <strong>Model:</strong> 9901
+              <strong>Item Name:</strong> {service?.defItem.title}
             </p>
             <button className="mt-2 bg-gray-200 text-gray-700 px-3 py-1 rounded">
-              Electronics
+              {service?.defItem.category}
             </button>
           </div>
 
