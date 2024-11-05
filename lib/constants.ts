@@ -1,53 +1,90 @@
-import { TABLE_TYPE, UserType } from "./enums";
+import { GetServiceDto } from "./dto";
+import { TableConfig, TableType, UserType } from "./enums";
 
 export const AUTH_COOKIE_KEYWORD = "jwt";
 
-type TableConfig = {
-  showMineToggle: boolean;
-  tabs: TABLE_TYPE[];
-};
-
 export const USER_TABLE_CONFIG: Record<UserType, TableConfig> = {
   [UserType.CLERK]: {
-    tabs: ["customer", "service", "repairperson"],
     showMineToggle: true,
+    tabs: [
+      { value: "customer", label: "Customers" },
+      { value: "service", label: "Services" },
+      { value: "repairperson", label: "Repair Persons" },
+    ],
   },
   [UserType.CUSTOMER]: {
-    tabs: ["service", "request"],
     showMineToggle: false,
+    tabs: [
+      { value: "service", label: "Services" },
+      { value: "request", label: "Requests" },
+    ],
   },
   [UserType.REPAIR]: {
-    tabs: ["service", "request"],
     showMineToggle: false,
+    tabs: [
+      { value: "service", label: "Services" },
+      { value: "request", label: "Requests" },
+    ],
   },
 };
 
 export const TABLE_INFO: Record<
-  TABLE_TYPE,
+  TableType,
   {
     key: string;
     value: string;
-    headers: string[];
+    headers: {
+      label: string;
+      key: string;
+    }[];
   }
 > = {
   customer: {
     key: "customers",
     value: "Customers",
-    headers: ["ID", "Name", "Email", "Phone", "Created by"],
+    headers: [
+      { label: "ID", key: "id" },
+      { label: "Name", key: "name" },
+      { label: "Email", key: "email" },
+      { label: "Phone", key: "phone" },
+      { label: "Address", key: "address" },
+    ],
   },
   repairperson: {
     key: "repairpersons",
     value: "Repair Persons",
-    headers: ["ID", "Name", "Email", "Phone", "Created by"],
+    headers: [
+      { label: "ID", key: "id" },
+      { label: "Name", key: "name" },
+      { label: "Email", key: "email" },
+      { label: "Phone", key: "phone" },
+      { label: "Specialty", key: "specialty" },
+    ],
   },
   service: {
     key: "services",
     value: "Services",
-    headers: ["ID", "Service Code", "Defective Item", "Status", "Customer"],
+    headers: [
+      { label: "ID", key: "id" },
+      { label: "Service Code", key: "code" },
+      { label: "Defective Item", key: "defItem.title" }, // FIXME
+      { label: "Status", key: "status" },
+      { label: "Customer", key: "custName" },
+      { label: "Assigned to", key: "repairName" },
+    ] as {
+      label: string;
+      key: keyof GetServiceDto;
+    }[],
   },
   request: {
     key: "requests",
     value: "Requests",
-    headers: ["ID", "Service Code", "Defective Item", "New Item", "Price"],
+    headers: [
+      { label: "ID", key: "id" },
+      { label: "Service Code", key: "serviceCode" },
+      { label: "Defective Item", key: "defectiveItem" },
+      { label: "New Item", key: "newItem" },
+      { label: "Price", key: "price" },
+    ],
   },
 };

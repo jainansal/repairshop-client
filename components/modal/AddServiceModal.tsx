@@ -34,48 +34,39 @@ import {
   CommandList,
 } from "../ui/command";
 import { cn } from "@/lib/utils";
+import { toast } from "@/hooks/use-toast";
+import axiosInstance from "@/lib/axios";
+import { PostServiceDto } from "@/lib/dto";
 
 const formSchema = z.object({
-  customer: z.string().min(1, "Customer is required"),
+  customer: z.number({ required_error: "Select a customer" }),
   productCode: z.string().min(1, "Product code is required"),
   productName: z.string().min(1, "Product name is required"),
   category: z.string().min(1, "Category is required"),
-  description: z.string(),
-  defectiveItem: z.string().min(1, "Defective item is required"),
-  charges: z.number().min(0, "Charges cannot be less than zero"),
-  repairPerson: z
-    .string()
-    .min(1, "Service must be assigned to a repair person"),
+  description: z.string().min(1, "Description is required"),
+  charges: z.string().transform((val) => parseFloat(val)),
+  repairPerson: z.number({ required_error: "Select a repair person" }),
 });
-
-const customers = [
-  { label: "Ansal Jain", value: "jainansal@gmail.com" },
-  { label: "Harshit", value: "harshit@gmail.com" },
-  { label: "Dhruv Sharma", value: "dhruv@gmail.com" },
-  { label: "Karan Rathor", value: "karan@gmail.com" },
-  { label: "Karan Ratho", value: "karan@gmail.co" },
-  { label: "Karan Rathr", value: "karan@gmail.cm" },
-  { label: "Karan Rator", value: "karan@gmail.om" },
-  { label: "Karan Rahor", value: "karan@gmailcom" },
-  { label: "Karan Rthor", value: "karan@gmai.com" },
-  { label: "Karan athor", value: "karan@gmal.com" },
-  { label: "KaranRathor", value: "karan@gmil.com" },
-] as const;
 
 const AddServiceModal = () => {
   const { isOpen, type, onClose, data } = useModal();
   const [showDefectiveItemModal, setShowDefectiveItemModal] = useState(false);
   const [defectiveItemId, setDefectiveItemId] = useState("");
+  const [customers, setCustomers] = useState<
+    { label: string; value: number; description: string }[]
+  >([]);
+  const [repairPersons, setRepairPersons] = useState<
+    { label: string; value: number; description: string }[]
+  >([]);
 
   const isModalOpen = isOpen && type === "addService";
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      customer: "",
-      defectiveItem: "",
+      customer: 0,
+      repairPerson: 0,
       charges: 0,
-      repairPerson: "",
       productCode: "",
       productName: "",
       category: "",
@@ -83,12 +74,78 @@ const AddServiceModal = () => {
     },
   });
 
-  useEffect(() => {}, [form]);
+  useEffect(() => {
+    async function fetchCustomers() {
+      try {
+        const response = await axiosInstance.get(
+          "/clerk/customers?limit=100000"
+        );
+        const { content } = response.data;
+        setCustomers(
+          content.map((customer: any) => ({
+            label: customer.name,
+            value: customer.id,
+            description: customer.email,
+          }))
+        );
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: "Some error occured while fetching customers",
+        });
+        console.log(error);
+      }
+    }
+    async function fetchRepairPersons() {
+      try {
+        const response = await axiosInstance.get(
+          "/clerk/repairpersons?limit=100000"
+        );
+        const { content } = response.data;
+        setRepairPersons(
+          content.map((repair: any) => ({
+            label: repair.name,
+            value: repair.id,
+            description: repair.email,
+          }))
+        );
+      } catch (error) {
+        toast({
+          variant: "destructive",
+          description: "Some error occured while fetching repair persons",
+        });
+        console.log(error);
+      }
+    }
+    if (isModalOpen) {
+      Promise.all([fetchCustomers(), fetchRepairPersons()]);
+    }
+  }, [isModalOpen]);
 
   const isLoading = form.formState.isSubmitting;
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    try {
+      const responseBody: PostServiceDto = {
+        baseCharge: values.charges,
+        description: values.description,
+        custId: values.customer,
+        repairId: values.repairPerson,
+        productCategory: values.category,
+        productCode: values.productCode,
+        productTitle: values.productName,
+      };
+      const response = await axiosInstance.post("/clerk/service", responseBody);
+      toast({
+        description: "Service created successfully",
+      });
+      onClose();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Some error occured",
+      });
+    }
   };
 
   const handleClose = () => {
@@ -162,7 +219,7 @@ const AddServiceModal = () => {
                                   />
                                   {customer.label}
                                   <span className="text-xs opacity-20">
-                                    {customer.value}
+                                    {customer.description}
                                   </span>
                                 </CommandItem>
                               ))}
@@ -266,7 +323,6 @@ const AddServiceModal = () => {
                     <FormControl>
                       <div className="flex items-center gap-2 ">
                         <div className="text-xl opacity-50">Rs.</div>
-
                         <Input
                           type="number"
                           disabled={isLoading}
@@ -300,8 +356,9 @@ const AddServiceModal = () => {
                             )}
                           >
                             {field.value
-                              ? customers.find(
-                                  (customer) => customer.value === field.value
+                              ? repairPersons.find(
+                                  (repairPerson) =>
+                                    repairPerson.value === field.value
                                 )?.label
                               : "Select repair person"}
                             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
@@ -314,28 +371,28 @@ const AddServiceModal = () => {
                           <CommandList>
                             <CommandEmpty>No repair person found.</CommandEmpty>
                             <CommandGroup>
-                              {customers.map((customer) => (
+                              {repairPersons.map((repairPerson) => (
                                 <CommandItem
-                                  value={customer.label}
-                                  key={customer.value}
+                                  value={repairPerson.label}
+                                  key={repairPerson.value}
                                   onSelect={() => {
                                     form.setValue(
                                       "repairPerson",
-                                      customer.value
+                                      repairPerson.value
                                     );
                                   }}
                                 >
                                   <Check
                                     className={cn(
                                       "mr-2 h-4 w-4",
-                                      customer.value === field.value
+                                      repairPerson.value === field.value
                                         ? "opacity-100"
                                         : "opacity-0"
                                     )}
                                   />
-                                  {customer.label}
+                                  {repairPerson.label}
                                   <span className="text-xs opacity-20">
-                                    {customer.value}
+                                    {repairPerson.description}
                                   </span>
                                 </CommandItem>
                               ))}
@@ -350,7 +407,7 @@ const AddServiceModal = () => {
               />
             </div>
             <DialogFooter className="bg-gray-100 px-6 py-4">
-              <Button disabled={isLoading} variant={"primary"}>
+              <Button disabled={isLoading} variant={"primary"} type="submit">
                 Add
               </Button>
             </DialogFooter>

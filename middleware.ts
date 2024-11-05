@@ -17,5 +17,17 @@ export function middleware(request: NextRequest) {
 // Define routes where middleware should apply
 export const config = {
   // matcher: "/((?!login).*)", // Protect these routes
-  matcher: ["/home", "/profile", "/customer", "/repair"], // Protect these routes
+  matcher: [
+    "/home",
+    "/profile",
+    "/customer",
+    "/repair",
+    "/service",
+    "/",
+    "/home/:path*",
+    "/profile/:path*",
+    "/customer/:path*",
+    "/repair/:path*",
+    "/service/:path*",
+  ], // Protect these routes
 };

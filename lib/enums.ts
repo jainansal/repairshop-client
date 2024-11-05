@@ -4,5 +4,14 @@ export enum UserType {
   CUSTOMER = "customer",
 }
 
-export type TABLE_TYPE = "customer" | "repairperson" | "service" | "request";
+export type TableType = "customer" | "repairperson" | "service" | "request";
 
+export type TableConfig = {
+  showMineToggle: boolean;
+  tabs: TableTab[];
+};
+
+export type TableTab = {
+  value: TableType;
+  label: string;
+};
