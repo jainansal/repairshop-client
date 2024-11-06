@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { act, useEffect, useState } from "react";
 import TableHeading from "./TableHeading";
 import { Switch } from "../ui/switch";
 import { Label } from "../ui/label";
 import ResultsTable from "./ResultsTable";
-import { UserType } from "@/lib/enums";
+import { TableTab, UserType } from "@/lib/enums";
 import { toast } from "@/hooks/use-toast";
 import { useUser } from "@/hooks/useUser";
 import axiosInstance from "@/lib/axios";
@@ -17,11 +17,18 @@ interface TableSectionProps {
 
 const TableSection = ({ search }: TableSectionProps) => {
   const { user, isAuthenticated } = useUser();
-  const { tabs, showMineToggle } =
-    USER_TABLE_CONFIG[user?.type || UserType.CLERK];
+  const [tabs, setTabs] = useState<TableTab[]>([]);
+  const [showMineToggle, setShowMineToggle] = useState(false);
   const [activeTab, setActiveTab] = useState(tabs[0]);
   const [content, setContent] = useState([]);
   const [isShowMine, setShowMine] = useState(false);
+  useEffect(() => {
+    if (user?.type) {
+      setTabs(USER_TABLE_CONFIG[user?.type].tabs);
+      setActiveTab(tabs[0]);
+      setShowMineToggle(USER_TABLE_CONFIG[user?.type].showMineToggle);
+    }
+  }, [user, tabs]);
   useEffect(() => {
     async function fetchData() {
       try {
@@ -55,7 +62,7 @@ const TableSection = ({ search }: TableSectionProps) => {
             />
           ))}
         </div>
-        {showMineToggle && (
+        {tabs.length && showMineToggle && (
           <div className="flex items-center space-x-2">
             <Switch
               id="show-mine"
@@ -67,7 +74,8 @@ const TableSection = ({ search }: TableSectionProps) => {
           </div>
         )}
       </div>
-      <ResultsTable activeTab={activeTab} content={content} />
+
+      {activeTab && <ResultsTable activeTab={activeTab} content={content} />}
     </div>
   );
 };

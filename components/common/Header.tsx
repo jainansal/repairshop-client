@@ -10,10 +10,11 @@ import {
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import axiosInstance from "@/lib/axios";
+import Router from "next/router";
 
 const Header = () => {
   const router = useRouter();
-  const { login } = useUser();
+  const { login, user, logout } = useUser();
 
   useEffect(() => {
     async function init() {
@@ -37,9 +38,9 @@ const Header = () => {
     init();
   }, []);
 
-  const logout = async () => {
+  const logoutUser = async () => {
     await axiosInstance.post("/logout");
-    router.push("/login");
+    window.location.reload();
   };
 
   return (
@@ -58,7 +59,7 @@ const Header = () => {
           <DropdownMenuItem onClick={() => router.push("/profile")}>
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={logoutUser}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

@@ -87,7 +87,7 @@ const NewItemRequestModal = () => {
     }
     if (user?.id && user.type == UserType.REPAIR && isModalOpen)
       fetchNewItems();
-  }, [user]);
+  }, [user, isModalOpen]);
 
   const isLoading = form.formState.isSubmitting;
 

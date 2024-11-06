@@ -15,10 +15,12 @@ interface UserContext {
   user: UserData | null;
   isAuthenticated: boolean;
   login: (user: UserData) => void;
+  logout: () => void;
 }
 
 export const useUser = create<UserContext>((set) => ({
   user: null,
   isAuthenticated: false,
   login: (user: UserData) => set({ user, isAuthenticated: true }),
+  logout: () => set({ user: null, isAuthenticated: false }),
 }));

@@ -50,7 +50,7 @@ const LoginPage = () => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axiosInstance.post("/login", values);
-      router.push("/home");
+      window.location.href = "/home";
     } catch (error) {
       toast({
         variant: "destructive",

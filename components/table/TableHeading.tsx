@@ -14,7 +14,7 @@ const TableHeading = ({ tab, activeTab, setActiveTab }: TableHeadingProps) => {
       className={`
         cursor-pointer duration-150 h-7 flex items-end
         ${
-          activeTab.value == tab.value
+          activeTab?.value == tab?.value
             ? "text-blue-700 text-xl font-bold underline underline-offset-4"
             : "text-gray-600"
         }`}
