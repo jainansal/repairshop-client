@@ -27,7 +27,7 @@ const Header = () => {
             email,
             phone,
             address,
-            type: type.toLowerCase(),
+            type,
           });
         }
       } catch (error) {
@@ -36,6 +36,11 @@ const Header = () => {
     }
     init();
   }, []);
+
+  const logout = async () => {
+    await axiosInstance.post("/logout");
+    router.push("/login");
+  };
 
   return (
     <div className=" text-white flex items-center justify-between p-4 bg-blue-500">
@@ -53,9 +58,7 @@ const Header = () => {
           <DropdownMenuItem onClick={() => router.push("/profile")}>
             Profile
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => console.log("Hello")}>
-            Logout
-          </DropdownMenuItem>
+          <DropdownMenuItem onClick={logout}>Logout</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

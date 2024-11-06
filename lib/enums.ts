@@ -1,5 +1,5 @@
 export enum UserType {
-  REPAIR = "repair",
+  REPAIR = "repairperson",
   CLERK = "clerk",
   CUSTOMER = "customer",
 }

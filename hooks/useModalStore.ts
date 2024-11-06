@@ -10,6 +10,7 @@ export type ModalType =
   | "newItemRequest";
 
 interface User {
+  id: number;
   name: string;
   email: string;
   phone: string;

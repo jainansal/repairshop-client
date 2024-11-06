@@ -26,7 +26,9 @@ const TableSection = ({ search }: TableSectionProps) => {
     async function fetchData() {
       try {
         const response = await axiosInstance.get(
-          `/${user?.type}/${TABLE_INFO[activeTab.value].key}?search=${search}`
+          `/${user?.type}/${
+            TABLE_INFO[activeTab.value].key
+          }?search=${search}&onlyMine=${isShowMine}`
         );
         setContent(response.data.content);
       } catch (error) {
@@ -39,7 +41,7 @@ const TableSection = ({ search }: TableSectionProps) => {
     if (isAuthenticated) {
       fetchData();
     }
-  }, [search, activeTab, user]);
+  }, [search, activeTab, user, isShowMine]);
   return (
     <div className="h-full flex flex-col overflow-hidden rounded">
       <div className="flex p-4 justify-between items-center bg-blue-200">
@@ -59,9 +61,7 @@ const TableSection = ({ search }: TableSectionProps) => {
               id="show-mine"
               className="data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-neutral-300 "
               checked={isShowMine}
-              onChange={(e) => {
-                console.log(e);
-              }}
+              onCheckedChange={(flag) => setShowMine(flag)}
             />
             <Label htmlFor="show-mine">Only show mine</Label>
           </div>

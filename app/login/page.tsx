@@ -50,10 +50,6 @@ const LoginPage = () => {
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axiosInstance.post("/login", values);
-      login({
-        type: form.getValues("type"),
-        id: "",
-      });
       router.push("/home");
     } catch (error) {
       toast({
@@ -131,12 +127,12 @@ const LoginPage = () => {
                       Login as
                     </FormLabel>
                     <FormControl>
-                      <Select>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
                         <SelectTrigger className="w-full">
-                          <SelectValue
-                            defaultValue={UserType.CLERK}
-                            placeholder="Clerk"
-                          />
+                          <SelectValue placeholder="Select a user type" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value={UserType.CLERK}>Clerk</SelectItem>

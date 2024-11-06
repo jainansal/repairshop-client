@@ -122,6 +122,12 @@ const AddServiceModal = () => {
     }
   }, [isModalOpen]);
 
+  useEffect(() => {
+    if (data?.user?.id) {
+      form.setValue("customer", data.user?.id);
+    }
+  }, [data, form]);
+
   const isLoading = form.formState.isSubmitting;
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {

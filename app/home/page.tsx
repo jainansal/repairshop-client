@@ -6,14 +6,14 @@ import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/useModalStore";
 import { useUser } from "@/hooks/useUser";
 import { UserType } from "@/lib/enums";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const HomePage = () => {
   const { user } = useUser();
   const { onOpen } = useModal();
   const [search, setSearch] = useState("");
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const inputKeyDown = (e: KeyboardEvent) => {
+  const inputKeyDown = (e: React.KeyboardEvent) => {
     if (e.key == "Enter") {
       setSearch(searchInputRef?.current?.value || "");
     }
@@ -31,7 +31,11 @@ const HomePage = () => {
   return (
     <div className="h-full w-full p-4 gap-4 flex flex-col overflow-hidden">
       <div className="flex gap-4">
-        <Input placeholder="Search..." ref={searchInputRef} />
+        <Input
+          placeholder="Search..."
+          ref={searchInputRef}
+          onKeyDown={inputKeyDown}
+        />
         {user?.type == UserType.CLERK ? <AddCustomerServiceDropdown /> : ""}
       </div>
       <TableSection search={search} />

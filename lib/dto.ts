@@ -49,3 +49,25 @@ export interface GetServiceHistoryDto {
   description: string;
   createdAt: string;
 }
+
+export interface GetRFADto {
+  id: number;
+  description: string;
+  serviceCharge: number;
+  label: string;
+  productCode: string;
+  defItemTitle: string;
+  status: string;
+  newItem: GetNewItemDto;
+}
+
+export interface GetNewItemDto {
+  id: number;
+  productCode: string;
+  title: string;
+  description: string;
+  category: string;
+  createdAt: string;
+  updatedAt: string;
+  price: number;
+}
