@@ -22,6 +22,10 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { useUser } from "@/hooks/useUser";
+import axiosInstance from "@/lib/axios";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 // Define schema for change password form validation
 const formSchema = z
@@ -42,7 +46,9 @@ const formSchema = z
   });
 
 const ChangePasswordModal = () => {
+  const { user } = useUser();
   const { isOpen, type, onClose } = useModal();
+  const router = useRouter();
 
   const isModalOpen = isOpen && type === "changePassword";
 
@@ -58,9 +64,23 @@ const ChangePasswordModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Password change values:", values);
-    // Add your change password logic here (e.g., API call)
-    onClose();
+    try {
+      const response = await axiosInstance.put(`/${user?.type}/password`, {
+        oldPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      });
+      handleClose();
+      toast({
+        description: "Password changed successfully!",
+      });
+      router.refresh();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Some error occured while changing password",
+      });
+      console.log(error);
+    }
   };
 
   const handleClose = () => {

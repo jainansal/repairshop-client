@@ -45,7 +45,11 @@ const RequestForApproval = () => {
         {user?.type == UserType.REPAIR ? (
           <div
             className="flex px-2 py-1 gap-1 rounded bg-blue-600 text-sm items-center text-neutral-100 hover:bg-blue-700 cursor-pointer"
-            onClick={() => onOpen("newItemRequest")}
+            onClick={() =>
+              onOpen("newItemRequest", {
+                serviceId: parseInt(id?.toString() || "0"),
+              })
+            }
           >
             <Plus size={16} />
             New

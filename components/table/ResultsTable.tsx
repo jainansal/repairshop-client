@@ -1,3 +1,4 @@
+import { useUser } from "@/hooks/useUser";
 import {
   Table,
   TableBody,
@@ -9,6 +10,7 @@ import {
 } from "../ui/table";
 import { TABLE_INFO } from "@/lib/constants";
 import { TableTab } from "@/lib/enums";
+import { getNestedValue } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 
 interface ResultsTableProps {
@@ -19,7 +21,8 @@ interface ResultsTableProps {
 const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
   const router = useRouter();
   const goToResource = (id: number) => {
-    router.push(`/${activeTab.value}/${id}`);
+    if (TABLE_INFO[activeTab.value].isLink)
+      router.push(`/${activeTab.value}/${id}`);
   };
   return (
     <Table className="bg-blue-50">
@@ -47,7 +50,7 @@ const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
                 .map((header) => header.key)
                 .map((key) => (
                   <TableCell key={`${item["id"]}-${key}`}>
-                    {item[key]}
+                    {getNestedValue(item, key)}
                   </TableCell>
                 ))}
               <TableCell className="text-right">Action</TableCell>

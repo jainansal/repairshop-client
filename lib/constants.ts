@@ -1,4 +1,4 @@
-import { GetServiceDto } from "./dto";
+import { GetRFADto, GetServiceDto } from "./dto";
 import { TableConfig, TableType, UserType } from "./enums";
 
 export const AUTH_COOKIE_KEYWORD = "jwt";
@@ -33,6 +33,7 @@ export const TABLE_INFO: Record<
   {
     key: string;
     value: string;
+    isLink?: boolean;
     headers: {
       label: string;
       key: string;
@@ -42,6 +43,7 @@ export const TABLE_INFO: Record<
   customer: {
     key: "customers",
     value: "Customers",
+    isLink: true,
     headers: [
       { label: "ID", key: "id" },
       { label: "Name", key: "name" },
@@ -53,6 +55,7 @@ export const TABLE_INFO: Record<
   repairperson: {
     key: "repairpersons",
     value: "Repair Persons",
+    isLink: true,
     headers: [
       { label: "ID", key: "id" },
       { label: "Name", key: "name" },
@@ -64,10 +67,11 @@ export const TABLE_INFO: Record<
   service: {
     key: "services",
     value: "Services",
+    isLink: true,
     headers: [
       { label: "ID", key: "id" },
       { label: "Service Code", key: "code" },
-      { label: "Defective Item", key: "defItem.title" }, // FIXME
+      { label: "Defective Item", key: "defItem.title" },
       { label: "Status", key: "status" },
       { label: "Customer", key: "custName" },
       { label: "Assigned to", key: "repairName" },
@@ -80,12 +84,19 @@ export const TABLE_INFO: Record<
   request: {
     key: "requests",
     value: "Requests",
+    isLink: false,
     headers: [
       { label: "ID", key: "id" },
-      { label: "Service Code", key: "serviceCode" },
-      { label: "Defective Item", key: "defectiveItem" },
-      { label: "New Item", key: "newItem" },
-      { label: "Price", key: "price" },
-    ],
+      { label: "New Item", key: "newItem.title" },
+      { label: "New Item Price (Rs.)", key: "newItem.price" },
+      { label: "Service Charge (Rs.)", key: "serviceCharge" },
+      { label: "Defective Item", key: "defItemTitle" },
+      { label: "Status", key: "status" },
+    ] as {
+      label: string;
+      key: keyof GetRFADto;
+    }[],
   },
 };
+
+export const REQUEST_LABELS = ["Generic Service", "High Priority"];

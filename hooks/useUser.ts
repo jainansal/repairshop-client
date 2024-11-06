@@ -2,12 +2,13 @@ import { UserType } from "@/lib/enums";
 import { create } from "zustand";
 
 interface UserData {
-  id: string;
+  id: number;
   type: UserType;
   name: string;
   email: string;
   phone: string;
   address: string;
+  specialty?: string;
 }
 
 interface UserContext {

@@ -1,3 +1,4 @@
+import { GetServiceDto, GetUserDto } from "@/lib/dto";
 import { create } from "zustand";
 
 export type ModalType =
@@ -18,7 +19,8 @@ interface User {
 }
 
 interface ModalData {
-  user?: User;
+  user?: GetUserDto;
+  serviceId?: number;
 }
 
 interface ModalStore {

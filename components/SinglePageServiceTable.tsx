@@ -1,5 +1,6 @@
 import { TABLE_INFO } from "@/lib/constants";
 import { GetServiceDto } from "@/lib/dto";
+import { getNestedValue } from "@/lib/utils";
 import React from "react";
 
 interface SinglePageServiceTableProps {
@@ -30,7 +31,7 @@ const SinglePageServiceTable = ({ data, id }: SinglePageServiceTableProps) => {
                 .map((header) => header.key)
                 .map((key) => (
                   <td className="border px-4 py-2" key={`${id}-${key}`}>
-                    {service[key as keyof GetServiceDto]?.toString()}
+                    {getNestedValue(service, key)}
                   </td>
                 ))}
             </tr>

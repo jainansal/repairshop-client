@@ -23,17 +23,22 @@ import {
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
+import axiosInstance from "@/lib/axios";
+import { useUser } from "@/hooks/useUser";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
-// Define schema for update profile form validation
 const formSchema = z.object({
   name: z.string().min(1, { message: "Name is required." }),
-  email: z.string().min(1, { message: "Email is required." }),
+  email: z.string().email("Email is required"),
   phone: z.string().min(1, { message: "Phone number is required." }),
-  address: z.string(),
+  address: z.string().min(1, { message: "Address is required." }),
 });
 
 const UpdateProfileModal = () => {
   const { isOpen, type, onClose, data } = useModal();
+  const router = useRouter();
+  const { user } = useUser();
 
   const isModalOpen = isOpen && type === "updateProfile";
 
@@ -61,9 +66,23 @@ const UpdateProfileModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log("Updated profile values:", values);
-    // Add your update profile logic here (e.g., API call)
-    onClose();
+    try {
+      const response = await axiosInstance.put(
+        `/${user?.type}/profile`,
+        values
+      );
+      handleClose();
+      toast({
+        description: "Profile updated!",
+      });
+      router.refresh();
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        description: "Some error occured while updating profile",
+      });
+      console.log(error);
+    }
   };
 
   const handleClose = () => {

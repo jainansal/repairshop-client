@@ -27,6 +27,15 @@ export interface GetDefectiveItemDto {
   category: string;
 }
 
+export interface GetUserDto {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  address: string;
+  specialty?: string;
+}
+
 export interface GetRepairPersonDto {
   id: number;
   name: string;
