@@ -8,6 +8,10 @@ import ChangePasswordModal from "../modal/ChangePasswordModal";
 import DefectiveItemDetailsModal from "../modal/DefectiveItemDetailsModal";
 import RequestApprovalDetailsModal from "../modal/RequestApprovalDetailsModal";
 import NewItemRequestModal from "../modal/NewItemRequestModal";
+import CloseServiceModal from "../modal/CloseServiceModal";
+import GenerateInvoiceConfirmationModal from "../modal/GenerateInvoiceConfirmationModal";
+import EnterInvoiceOtpModal from "../modal/EnterInvoiceOtpModal";
+import InvoiceDetailsModal from "../modal/InvoiceDetailsModal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -27,6 +31,10 @@ const ModalProvider = () => {
       <DefectiveItemDetailsModal />
       <RequestApprovalDetailsModal />
       <NewItemRequestModal />
+      <CloseServiceModal />
+      <GenerateInvoiceConfirmationModal />
+      <EnterInvoiceOtpModal />
+      <InvoiceDetailsModal />
     </>
   );
 };

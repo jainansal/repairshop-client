@@ -3,16 +3,19 @@ import { useModal } from "@/hooks/useModalStore";
 import React from "react";
 
 interface GenerateInvoiceProps {
-  customer: any;
+  service: any;
 }
 
-const GenerateInvoice = ({ customer }: GenerateInvoiceProps) => {
+const GenerateInvoice = ({ service }: GenerateInvoiceProps) => {
   const { onOpen } = useModal();
   return (
     <Button
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 h-fit"
       onClick={(e) => {
-        onOpen("addService");
+        onOpen("generateInvoiceConfirmation", {
+          serviceId: service.id,
+          service,
+        });
         e.stopPropagation();
       }}
     >

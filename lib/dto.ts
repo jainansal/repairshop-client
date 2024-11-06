@@ -80,3 +80,11 @@ export interface GetNewItemDto {
   updatedAt: string;
   price: number;
 }
+
+export interface GetInvoiceDto {
+  id: number;
+  totalAmount: number;
+  deliveredAt: string;
+  serviceDTO: GetServiceDto;
+  list: GetRFADto[];
+}

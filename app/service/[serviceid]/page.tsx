@@ -6,6 +6,7 @@ import { toast } from "@/hooks/use-toast";
 import { useModal } from "@/hooks/useModalStore";
 import { useUser } from "@/hooks/useUser";
 import axiosInstance from "@/lib/axios";
+import { SERVICE_CLOSED_STATUS } from "@/lib/constants";
 import { GetServiceDto, GetServiceHistoryDto } from "@/lib/dto";
 import { UserType } from "@/lib/enums";
 import { useParams, useRouter } from "next/navigation";
@@ -93,7 +94,9 @@ function ServiceDetails() {
             </button>
           </div>
 
-          <RequestForApproval />
+          <RequestForApproval
+            showNew={service?.status !== SERVICE_CLOSED_STATUS}
+          />
           {user?.type == UserType.CLERK ? (
             <button
               className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 w-full disabled:bg-purple-400 disabled:hover:bg-purple-400 disabled:cursor-not-allowed"
@@ -106,10 +109,13 @@ function ServiceDetails() {
           )}
           {user?.type == UserType.REPAIR ? (
             <button
-              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full disabled:bg-green-400 disabled:hover:bg-green-400 disabled:cursor-not-allowed"
-              onClick={() => onOpen("addService")}
+              className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 w-full disabled:bg-neutral-400 disabled:hover:bg-neutral-400 disabled:cursor-not-allowed"
+              onClick={() => onOpen("closeService", { serviceId: service?.id })}
+              disabled={service?.status == SERVICE_CLOSED_STATUS}
             >
-              Mark as completed
+              {service?.status == SERVICE_CLOSED_STATUS
+                ? "Closed"
+                : "Close Service"}
             </button>
           ) : (
             ""

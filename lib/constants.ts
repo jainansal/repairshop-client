@@ -117,9 +117,11 @@ export const TABLE_INFO: Record<
     actions: {
       [UserType.CUSTOMER]: "respondToRequest",
       [UserType.CLERK]: null,
-      [UserType.REPAIR]: "deleteRequest",
+      [UserType.REPAIR]: null,
     },
   },
 };
 
 export const REQUEST_LABELS = ["Generic Service", "High Priority"];
+
+export const SERVICE_CLOSED_STATUS = "Closed";

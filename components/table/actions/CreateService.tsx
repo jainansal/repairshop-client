@@ -6,7 +6,7 @@ const CreateService = ({ customer }: { customer: any }) => {
   const { onOpen } = useModal();
   return (
     <Button
-      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+      className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 h-fit"
       onClick={(e) => {
         onOpen("addService", { user: customer });
         e.stopPropagation();

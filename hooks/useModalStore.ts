@@ -1,4 +1,4 @@
-import { GetServiceDto, GetUserDto } from "@/lib/dto";
+import { GetInvoiceDto, GetRFADto, GetServiceDto, GetUserDto } from "@/lib/dto";
 import { create } from "zustand";
 
 export type ModalType =
@@ -8,7 +8,11 @@ export type ModalType =
   | "changePassword"
   | "defectiveItemDetails"
   | "requestApprovalDetails"
-  | "newItemRequest";
+  | "newItemRequest"
+  | "closeService"
+  | "generateInvoiceConfirmation"
+  | "enterInvoiceOtp"
+  | "invoiceDetails"
 
 interface User {
   id: number;
@@ -21,6 +25,10 @@ interface User {
 interface ModalData {
   user?: GetUserDto;
   serviceId?: number;
+  service?: GetServiceDto;
+  request?: GetRFADto;
+  invoiceId?: number;
+  invoice?: GetInvoiceDto;
 }
 
 interface ModalStore {

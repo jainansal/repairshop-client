@@ -4,6 +4,11 @@ export enum UserType {
   CUSTOMER = "customer",
 }
 
+export enum RFAResponse {
+  APPROVE = "Approved",
+  REJECT = "Rejected"
+}
+
 export type TableType = "customer" | "repairperson" | "service" | "request";
 
 export type TableAction =

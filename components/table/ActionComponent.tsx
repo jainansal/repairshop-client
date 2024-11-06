@@ -3,6 +3,7 @@ import React from "react";
 import RespondToRequest from "./actions/RespondToRequest";
 import GenerateInvoice from "./actions/GenerateInvoice";
 import CreateService from "./actions/CreateService";
+import CloseService from "./actions/CloseService";
 
 interface ActionComponentProps {
   action: TableAction;
@@ -11,14 +12,13 @@ interface ActionComponentProps {
 
 const ActionComponent = ({ action, item }: ActionComponentProps) => {
   if (action == "closeService") {
+    return <CloseService service={item} />
   }
   if (action == "createService") {
     return <CreateService customer={item} />;
   }
-  if (action == "deleteRequest") {
-  }
   if (action == "generateInvoice") {
-    return <GenerateInvoice customer={item} />;
+    return <GenerateInvoice service={item} />;
   }
   if (action == "respondToRequest") {
     return <RespondToRequest data={item} />;
