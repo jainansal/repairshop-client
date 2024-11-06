@@ -24,7 +24,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Check, ChevronsUpDown } from "lucide-react";
+import { Check, ChevronsUpDown, Router } from "lucide-react";
 import {
   Command,
   CommandEmpty,
@@ -47,6 +47,8 @@ import {
   SelectValue,
 } from "../ui/select";
 import { UserType } from "@/lib/enums";
+import { createRequest } from "@/services/rfa";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   newItemId: z.number({ required_error: "Select an item" }),
@@ -57,6 +59,7 @@ const formSchema = z.object({
 
 const NewItemRequestModal = () => {
   const { isOpen, type, onClose, data } = useModal();
+  const router = useRouter();
   const { user } = useUser();
   const [items, setItems] = useState<GetNewItemDto[]>();
 
@@ -93,11 +96,10 @@ const NewItemRequestModal = () => {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axiosInstance.post(
-        `/${user?.type}/service/${data.serviceId}/request`,
-        values
-      );
-      setItems(response.data);
+      if (data.serviceId) {
+        await createRequest(data.serviceId, values);
+        router.refresh();
+      }
     } catch (error) {
       toast({
         variant: "destructive",

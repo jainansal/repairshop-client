@@ -62,7 +62,7 @@ const TableSection = ({ search }: TableSectionProps) => {
             />
           ))}
         </div>
-        {tabs.length && showMineToggle && (
+        {tabs.length && showMineToggle ? (
           <div className="flex items-center space-x-2">
             <Switch
               id="show-mine"
@@ -72,10 +72,16 @@ const TableSection = ({ search }: TableSectionProps) => {
             />
             <Label htmlFor="show-mine">Only show mine</Label>
           </div>
+        ) : (
+          ""
         )}
       </div>
 
-      {activeTab && <ResultsTable activeTab={activeTab} content={content} />}
+      {activeTab ? (
+        <ResultsTable activeTab={activeTab} content={content} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

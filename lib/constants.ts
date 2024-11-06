@@ -1,5 +1,5 @@
 import { GetRFADto, GetServiceDto } from "./dto";
-import { TableConfig, TableType, UserType } from "./enums";
+import { TableAction, TableConfig, TableType, UserType } from "./enums";
 
 export const AUTH_COOKIE_KEYWORD = "jwt";
 
@@ -38,6 +38,9 @@ export const TABLE_INFO: Record<
       label: string;
       key: string;
     }[];
+    actions: {
+      [K in UserType]: TableAction | null;
+    };
   }
 > = {
   customer: {
@@ -51,6 +54,11 @@ export const TABLE_INFO: Record<
       { label: "Phone", key: "phone" },
       { label: "Address", key: "address" },
     ],
+    actions: {
+      [UserType.CUSTOMER]: null,
+      [UserType.CLERK]: "createService",
+      [UserType.REPAIR]: null,
+    },
   },
   repairperson: {
     key: "repairpersons",
@@ -63,6 +71,11 @@ export const TABLE_INFO: Record<
       { label: "Phone", key: "phone" },
       { label: "Specialty", key: "specialty" },
     ],
+    actions: {
+      [UserType.CUSTOMER]: null,
+      [UserType.CLERK]: null,
+      [UserType.REPAIR]: null,
+    },
   },
   service: {
     key: "services",
@@ -80,6 +93,11 @@ export const TABLE_INFO: Record<
       label: string;
       key: keyof GetServiceDto;
     }[],
+    actions: {
+      [UserType.CUSTOMER]: null,
+      [UserType.CLERK]: "generateInvoice",
+      [UserType.REPAIR]: "closeService",
+    },
   },
   request: {
     key: "requests",
@@ -96,6 +114,11 @@ export const TABLE_INFO: Record<
       label: string;
       key: keyof GetRFADto;
     }[],
+    actions: {
+      [UserType.CUSTOMER]: "respondToRequest",
+      [UserType.CLERK]: null,
+      [UserType.REPAIR]: "deleteRequest",
+    },
   },
 };
 

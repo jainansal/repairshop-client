@@ -9,9 +9,11 @@ import {
   TableRow,
 } from "../ui/table";
 import { TABLE_INFO } from "@/lib/constants";
-import { TableTab } from "@/lib/enums";
+import { TableAction, TableTab } from "@/lib/enums";
 import { getNestedValue } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { ReactNode, useEffect, useState } from "react";
+import ActionComponent from "./ActionComponent";
 
 interface ResultsTableProps {
   activeTab: TableTab;
@@ -19,7 +21,16 @@ interface ResultsTableProps {
 }
 
 const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
+  const { user } = useUser();
   const router = useRouter();
+  const [action, setAction] = useState<TableAction | null>(null);
+  useEffect(() => {
+    if (user?.type) {
+      setAction(TABLE_INFO[activeTab.value].actions[user?.type]);
+    } else {
+      setAction(null);
+    }
+  }, [user, activeTab]);
   const goToResource = (id: number) => {
     if (TABLE_INFO[activeTab.value].isLink)
       router.push(`/${activeTab.value}/${id}`);
@@ -36,7 +47,7 @@ const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
                 {header}
               </TableHead>
             ))}
-          <TableHead className="text-right">Action</TableHead>
+          {action ? <TableHead className="text-right">Action</TableHead> : ""}
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -53,7 +64,13 @@ const ResultsTable = ({ activeTab, content }: ResultsTableProps) => {
                     {getNestedValue(item, key)}
                   </TableCell>
                 ))}
-              <TableCell className="text-right">Action</TableCell>
+              {action ? (
+                <TableCell className="text-right">
+                  <ActionComponent action={action} item={item} />
+                </TableCell>
+              ) : (
+                ""
+              )}
             </TableRow>
           );
         })}

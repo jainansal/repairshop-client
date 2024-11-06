@@ -6,6 +6,13 @@ export enum UserType {
 
 export type TableType = "customer" | "repairperson" | "service" | "request";
 
+export type TableAction =
+  | "generateInvoice"
+  | "respondToRequest"
+  | "closeService"
+  | "createService"
+  | "deleteRequest";
+
 export type TableConfig = {
   showMineToggle: boolean;
   tabs: TableTab[];
@@ -14,4 +21,9 @@ export type TableConfig = {
 export type TableTab = {
   value: TableType;
   label: string;
+};
+
+export type UserTableAction = {
+  type: UserType;
+  action: TableAction;
 };
